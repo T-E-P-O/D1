@@ -1,0 +1,39 @@
+@startuml
+skinparam dpi 170
+skinparam shadowing false
+skinparam defaultFontName "Verdana"
+skinparam defaultFontSize 13
+skinparam roundcorner 0
+skinparam ActivityBackgroundColor #FBFAF6
+skinparam ActivityBorderColor #7F7A6B
+skinparam ActivityFontColor #17191C
+skinparam ActivityDiamondBackgroundColor #F3F1EA
+skinparam ActivityDiamondBorderColor #96412C
+skinparam ActivityDiamondFontColor #17191C
+skinparam ArrowColor #7F7A6B
+
+
+start
+:Aprire lo Scenario Builder;
+:Impostare budget e obiettivo;
+:Selezionare i candidati\n(ricerca, seleziona tutti, set demo);
+:Esaminare i vincoli applicati;
+if (Serve assistenza AI?) then (sì)
+  :Descrivere lo scenario in linguaggio naturale;
+  :Ricevere la proposta (non applicata);
+  if (Approvare la proposta?) then (sì)
+    :Applicare la proposta allo scenario;
+  else (no)
+    :Rifiutare la proposta;
+  endif
+else (no)
+endif
+:Rivedere costo selezionato, budget e residuo;
+if (Scenario ammissibile?) then (sì)
+  :Salvare come Scenario A o B (opzionale);
+  :Ottimizzare il portafoglio;
+else (no)
+  :Correggere selezione o budget;
+endif
+stop
+@enduml

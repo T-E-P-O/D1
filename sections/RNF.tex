@@ -1,0 +1,64 @@
+\section{Requisiti Non Funzionali}
+\label{sec:RNF}
+
+I requisiti non funzionali descrivono proprietà dell'intero sistema e non di una singola funzione. Per ogni requisito sono indicati, quando applicabile, criteri di verifica e una breve motivazione del valore o della soglia adottata; le soglie non ancora concordate con il committente sono esplicitamente marcate come da chiarire.
+
+\RNF{Isolamento del dominio applicativo.} \label{rnf:isolamento}
+Il sistema deve mantenere una separazione netta tra i seguenti livelli: (i) dati di catalogo, (ii) parametri di scenario, (iii) vincoli formali, (iv) motore di ottimizzazione, (v) generazione di spiegazioni, (vi) componente di assistenza AI, (vii) decisione finale dell'utente. Nessun livello deve poter modificare direttamente lo stato dei livelli che non gli competono; in particolare la componente AI non deve avere accesso in scrittura a dati, vincoli, parametri applicati, risultati o spiegazioni.
+
+\textbf{Motivazione:} la separazione è un vincolo di dominio del progetto ed è funzionale alla verificabilità del risultato: consente di verificare separatamente dati, calcolo e spiegazioni e impedisce che la componente AI possa influenzare il risultato matematico.
+
+\RNF{Determinismo e riproducibilità dell'ottimizzazione.} \label{rnf:determinismo}
+A parità di parametri di scenario (budget, obiettivo, insieme dei candidati, vincoli, configurazione dei timeout), l'ottimizzazione deve produrre lo stesso portafoglio e gli stessi indicatori aggregati, indipendentemente dall'ordine di presentazione dei candidati e dei vincoli di incompatibilità. Il sistema deve applicare criteri di spareggio deterministici e deve associare a ogni problema di ottimizzazione un \emph{hash canonico} indipendente dall'ordine degli input; l'identificativo dell'esecuzione può invece cambiare a ogni run.
+
+\textbf{Motivazione:} la riproducibilità è condizione necessaria perché un risultato possa essere discusso in sede decisionale e perché eventuali anomalie possano essere riprodotte e diagnosticate.
+
+\RNF{Prestazioni dell'ottimizzazione.} \label{rnf:prestazioni}
+L'ottimizzazione di uno scenario contenente fino a 30 opzioni candidate deve concludersi entro 5 secondi nel 95\% delle esecuzioni, in condizioni di deployment standard del prototipo (ambiente containerizzato, hardware di riferimento). In caso di superamento del tempo massimo, il sistema deve comunque restituire uno stato esplicito di ``indeterminato per timeout'' senza bloccare l'interfaccia; le operazioni di consultazione del catalogo devono restare utilizzabili durante il calcolo. Le prestazioni dell'analisi di sensibilità, che esegue una sequenza di ottimizzazioni indipendenti, sono da verificare separatamente e non rientrano nella soglia precedente. La verifica delle prestazioni è manuale, sul deployment di riferimento e con lo scenario canonico; il protocollo e i tempi osservati sono riportati nel D2.
+
+\textbf{Motivazione:} la soglia di 5 secondi è stata concordata per garantire che l'analisi what-if possa essere utilizzata in modo interattivo durante riunioni tecniche, senza interrompere il flusso di discussione dell'operatore. Il valore di riferimento dei 30 candidati corrisponde allo scenario canonico del prototipo.
+
+\RNF{Tracciabilità e auditabilità delle decisioni.} \label{rnf:tracciabilita}
+Ogni esecuzione di ottimizzazione deve essere persistita ai fini di audit, con: identificativo dell'esecuzione, istante di esecuzione, parametri di input, stato del calcolo, indici aggregati, spiegazioni prodotte e hash canonico del problema. Lo storico deve essere consultabile e non modificabile dall'interfaccia utente; le analisi di sensibilità, in quanto esplorazioni e non risultati di audit, devono esserne escluse in modo esplicito.
+
+\textbf{Motivazione:} l'auditabilità delle scelte è richiesta per garantire che le decisioni assunte sulla base di TEPO possano essere ricostruite e giustificate in sede di controllo amministrativo, anche a distanza di tempo.
+
+\RNF{Interpretabilità delle spiegazioni.} \label{rnf:interpretabilita}
+Ogni opzione candidata deve essere corredata da una spiegazione deterministica riconducibile a una categoria esplicita (selezione diretta, selezione come prerequisito, esclusione per uno specifico vincolo, esclusione non localmente dimostrabile). Il sistema non deve produrre spiegazioni in linguaggio naturale generato in modo non deterministico per classificare la causa di selezione o esclusione; le spiegazioni devono citare gli identificativi e i vincoli effettivamente utilizzati nel calcolo.
+
+\textbf{Motivazione:} la trasparenza decisionale è uno degli obiettivi primari dichiarati dal committente; spiegazioni opache o non riproducibili non sarebbero accettabili in sede di presentazione dei risultati alla cittadinanza.
+
+\RNF{Isolamento e opzionalità della componente AI.} \label{rnf:ai_isolamento}
+La componente di assistenza AI deve essere confinata alla generazione di proposte di configurazione e non deve avere accesso in scrittura ai dati di catalogo, ai vincoli, ai parametri di scenario applicati, al risultato dell'ottimizzazione né alle spiegazioni. L'applicativo deve essere pienamente funzionante in assenza di configurazione di un provider linguistico esterno e non deve richiedere alcuna chiave API per l'esecuzione della demo locale; nessuna credenziale o chiave deve essere inclusa nel repository.
+
+\textbf{Motivazione:} l'app funziona completamente senza API key per scelta architetturale esplicita, al fine di garantire la riproducibilità della demo in contesti offline o in assenza di credenziali esterne e per evitare che l'attivazione di un modello linguistico possa introdurre comportamenti non verificabili nel perimetro decisionale.
+
+\RNF{Compatibilità e responsività.} \label{rnf:compatibilita}
+Il sistema deve essere utilizzabile da browser moderni: Chrome versione 100 o superiore, Firefox versione 100 o superiore, Safari versione 15 o superiore e Microsoft Edge versione 100 o superiore. Il design deve essere responsivo e garantire la corretta fruizione dei contenuti su viewport con larghezza compresa tra 320 pixel (mobile) e 1920 pixel (desktop), senza compressione delle tabelle e senza perdita di informazione essenziale (gli elementi secondari possono essere compattati); i due registri visivi devono essere disponibili su tutte le dimensioni supportate. L'implementazione non deve dipendere da funzionalità CSS non supportate dalle versioni minime indicate.
+
+\textbf{Motivazione:} le versioni minime corrispondono ai browser installati sulle postazioni di lavoro tipicamente utilizzate negli uffici tecnici del Comune e sui dispositivi personali degli operatori; la soglia di 320 pixel copre gli smartphone di fascia bassa e la soglia di 1920 pixel copre i monitor degli uffici.
+
+\RNF{Accessibilità.} \label{rnf:accessibilita}
+Il sistema deve essere conforme alle linee guida WCAG 2.1 livello AA per quanto riguarda contrasto cromatico, navigazione da tastiera, focus visibile, testi alternativi per le immagini, struttura semantica delle pagine, etichette dei controlli e messaggi di errore. L'informazione non deve essere veicolata dal solo colore; le tabelle devono avere intestazioni e didascalie semantiche; i grafici devono disporre di una descrizione testuale equivalente; deve essere rispettata la preferenza di sistema per la riduzione del movimento; la stampa deve produrre un documento leggibile.
+
+\textbf{Motivazione:} la platea degli operatori tecnici include utenti con livelli di familiarità digitale diversificati; il rispetto delle linee guida WCAG 2.1 AA è stato assunto come riferimento perché è lo standard richiesto per i servizi pubblici digitali.
+
+\RNF{Manutenibilità e documentazione delle API.} \label{rnf:manutenibilita}
+Il sistema deve esporre le proprie API secondo una descrizione formale consultabile in modalità interattiva (documentazione OpenAPI consultabile in modo interattivo) e deve essere organizzato in moduli indipendenti e testabili. Ogni modifica alle API pubbliche deve essere riflessa nella documentazione tecnica e coperta da test automatici; il solver deve essere isolato dal resto dell'applicazione in modo da poter essere verificato senza frontend e senza database.
+
+\textbf{Motivazione:} la manutenibilità del sistema nel medio periodo è un requisito esplicito, in quanto il prototipo è destinato a evolvere verso l'integrazione con dati reali del Comune e sarà oggetto di valutazione in sede accademica.
+
+\RNF{Snapshot immutabile delle revisioni dati.} \label{rnf:snapshot}
+Ogni esecuzione di ottimizzazione registrata ai fini di audit deve essere ricostruibile a partire dall'hash canonico del problema e dalla revisione del catalogo dati utilizzata al momento dell'esecuzione. Il sistema deve rendere possibile associare a ciascuna esecuzione l'identificativo della revisione dei dati; la revisione del catalogo non deve essere modificata retroattivamente. Nel prototipo attuale l'associazione è parziale (viene registrato lo scenario); il collegamento alla revisione del catalogo è rinviato al D2.
+
+\textbf{Motivazione:} senza un riferimento esplicito alla revisione del catalogo, un risultato prodotto in una sessione precedente non sarebbe riproducibile qualora il catalogo fosse successivamente modificato, compromettendo l'affidabilità dell'audit. Il collegamento tra esecuzione e revisione dei dati è parzialmente coperto dal prototipo e deve essere completato nel D2.
+
+\RNF{Usabilità del percorso decisionale.} \label{rnf:usabilita}
+Il sistema deve rendere esplicito il percorso decisionale e guidare l'utente in ogni schermata, indicando lo stato corrente, l'azione principale disponibile e le conseguenze attese; ogni errore deve essere recuperabile e ogni stato di caricamento, vuoto o errore deve essere comunicato. Criterio di verifica: un operatore tecnico che non ha mai utilizzato TEPO deve riuscire a configurare uno scenario, eseguire una prima ottimizzazione e leggere il dossier senza assistenza esterna e senza formazione formale, utilizzando soltanto le indicazioni presenti nell'interfaccia. La soglia temporale esatta di questa prova di usabilità è da concordare con il committente e non è quindi fissata in questa sede.
+
+\textbf{Motivazione:} il sistema è destinato a un ufficio tecnico e non a utenti esperti di strumenti di ottimizzazione; il committente ha richiesto che il percorso di configurazione e lettura dei risultati sia comprensibile senza corsi dedicati. La verifica tramite prova osservata è stata preferita a una soglia temporale arbitraria.
+
+\RNF{Trasparenza e integrità della provenienza del dato.} \label{rnf:trasparenza}
+Il sistema deve rendere verificabile in ogni momento la provenienza dei dati e lo stato del prototipo: i valori sintetici devono essere riconoscibili come tali, il payback deve essere dichiarato come stima demo, la fonte del dataset e il modello di ottimizzazione devono essere riportati nel piè di pagina e nessun dato reale del Comune deve essere presentato come acquisito. L'integrità del dato deve essere preservata in importazione: nessun valore malformato può essere convertito in zero e nessuna riga può essere inserita senza essere stata validata.
+
+\textbf{Motivazione:} l'onestà del dato è una condizione di fiducia per un sistema che produce numeri destinati a supportare decisioni pubbliche; la natura sintetica del dataset deve essere chiara anche a chi consulta il sistema senza aver partecipato alla sua configurazione.

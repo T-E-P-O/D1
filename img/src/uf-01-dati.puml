@@ -1,0 +1,33 @@
+@startuml
+skinparam dpi 170
+skinparam shadowing false
+skinparam defaultFontName "Verdana"
+skinparam defaultFontSize 13
+skinparam roundcorner 0
+skinparam ActivityBackgroundColor #FBFAF6
+skinparam ActivityBorderColor #7F7A6B
+skinparam ActivityFontColor #17191C
+skinparam ActivityDiamondBackgroundColor #F3F1EA
+skinparam ActivityDiamondBorderColor #96412C
+skinparam ActivityDiamondFontColor #17191C
+skinparam ArrowColor #7F7A6B
+
+
+start
+:Consultare il catalogo degli edifici;
+:Consultare e filtrare gli interventi;
+if (Servono nuovi dati di catalogo?) then (sì)
+  :Aprire la pagina Import;
+  :Caricare o incollare il contenuto CSV;
+  :Avviare la validazione\n(nessuna scrittura sul database);
+  if (Esito della validazione valido?) then (sì)
+    :Esaminare le righe scartate e i motivi;
+    :Confermare l'importazione dei record validi;
+  else (no)
+    :Correggere le righe segnalate;
+  endif
+else (no)
+endif
+:Consultare il catalogo aggiornato;
+stop
+@enduml

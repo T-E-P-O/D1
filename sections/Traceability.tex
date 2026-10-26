@@ -1,0 +1,74 @@
+\section{Traceability}
+\label{sec:traceability}
+
+La matrice di tracciabilità verifica i collegamenti tra i requisiti funzionali e non funzionali del D1 e gli artefatti che li dettagliano (use case, user story, criteri di accettazione, mockup). Ogni requisito funzionale deve essere collegato ad almeno un artefatto che ne dettaglia o rappresenta il comportamento; gli RNF sono tracciati verso gli artefatti pertinenti (mockup, user flow o, quando non applicabile, verso la sezione di motivazione). Non è richiesto che ogni requisito abbia contemporaneamente use case, user story, criteri di accettazione e mockup: i collegamenti mancanti sono ammessi solo quando non applicabili o adeguatamente motivati.
+
+\begingroup
+\scriptsize
+\setlength{\tabcolsep}{2.5pt}
+\begin{longtable}{L{1.55cm} L{1.5cm} L{1.4cm} L{3.0cm} L{1.9cm} L{4.6cm}}
+\caption{Matrice di tracciabilità di TEPO.}\\
+\toprule
+\textbf{RF/RNF} & \textbf{Use Case} & \textbf{User Story} & \textbf{Acceptance Criteria} & \textbf{Mockup} & \textbf{Note} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{RF/RNF} & \textbf{Use Case} & \textbf{User Story} & \textbf{Acceptance Criteria} & \textbf{Mockup} & \textbf{Note} \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+
+RF-01 & UC-01 & US-01 & AC-US01-01/02/03 & MU-Fig.3 & Consultazione del catalogo degli edifici. \\
+RF-02 & UC-02 & US-02 & AC-US02-01/02/03 & MU-Fig.8 & Vista cartografica e stato degli edifici. \\
+RF-03 & UC-03 & US-03 & AC-US03-01/04 & MU-Fig.4 & Catalogo degli interventi. \\
+RF-04 & UC-03 & US-03 & AC-US03-02/03 & MU-Fig.4 & Ricerca, filtri e ordinamento degli interventi. \\
+RF-05 & UC-04 & US-04 & AC-US04-01/02/03/04 & MU-Fig.10 & Importazione CSV in due fasi. \\
+RF-06 & UC-05 & US-05 & AC-US05-01/02 & MU-Fig.5 & Configurazione dello scenario. \\
+RF-07 & UC-06 & US-06 & AC-US06-01/02/03/04 & MU-Fig.5 & Vincoli dello scenario. \\
+RF-08 & UC-05 & US-05 & AC-US05-03 & MU-Fig.5 & Selezione dei candidati e riepilogo della selezione. \\
+RF-09 & UC-07 & US-07 & AC-US07-01/02/03/04 & MU-Fig.6 & Esecuzione dell'ottimizzazione. \\
+RF-10 & UC-08 & US-08 & AC-US08-01/02/03/04 & MU-Fig.6 & Dossier del risultato. \\
+RF-11 & UC-08 & US-09 & AC-US09-01/02/03/04 & MU-Fig.6 & Spiegazioni deterministiche. \\
+RF-12 & UC-09 & US-10 & AC-US10-01/04 & MU-Fig.1 & Registro delle esecuzioni e storico di audit. \\
+RF-13 & UC-10 & US-11 & AC-US11-01/02/03/04 & MU-Fig.1, MU-Fig.6 & Slot A/B, duplicazione what-if e reset sessione. \\
+RF-14 & UC-11 & US-12 & AC-US12-01/02/03/04 & MU-Fig.7 & Confronto tra scenari. \\
+RF-15 & UC-12 & US-13 & AC-US13-01/02/03/04 & MU-Fig.9 & Analisi di sensibilità sul budget. \\
+RF-16 & UC-13 & US-14 & AC-US14-01/02/03/04 & MU-Fig.5 & Proposta AI opzionale. \\
+RF-17 & UC-14 & US-15 & AC-US15-01/02/03/04 & MU-Fig.5 & Approvazione umana della proposta. \\
+RF-18 & UC-15 & US-16 & AC-US16-01/02/03 & MU-Fig.1, MU-Fig.2 & Due registri e stampa della relazione. \\
+RF-19 & UC-01, UC-02, UC-03, UC-08 & US-17 & AC-US17-01/02/03 & MU-Fig.1--11 & Trasparenza e provenienza del dato. \\
+\midrule
+RNF-01 & --- & --- & --- & --- & Sezione~\ref{sec:RNF}, motivazione RNF-01. \\
+RNF-02 & UC-07 & US-07 & AC-US07-02 & MU-Fig.6 & Determinismo e hash canonico. \\
+RNF-03 & UC-07 & US-07 & AC-US07-03 & MU-Fig.6 & Prestazioni e stato di timeout. \\
+RNF-04 & UC-08, UC-09 & US-08, US-10 & AC-US08-01, AC-US10-03 & MU-Fig.6, MU-Fig.1 & Tracciabilità e auditabilità. \\
+RNF-05 & UC-08 & US-09 & AC-US09-01/02/03 & MU-Fig.6 & Interpretabilità delle spiegazioni. \\
+RNF-06 & UC-13, UC-14 & US-14, US-15 & AC-US14-02, AC-US15-01/03 & MU-Fig.5 & AI opzionale e confinata. \\
+RNF-07 & --- & --- & --- & MU-Fig.1, MU-Fig.11 & Compatibilità e responsività; verificata anche sui layout, non solo sui mockup. \\
+RNF-08 & --- & --- & --- & MU-Fig.1--11 & Accessibilità WCAG 2.1 AA; verificata anche sui flussi UF-01--UF-05. \\
+RNF-09 & --- & --- & --- & --- & Documentazione OpenAPI consultabile in modo interattivo e architettura modulare; non applicabile ai mockup. \\
+RNF-10 & UC-09 & US-10 & AC-US10-03 & MU-Fig.6 & Snapshot e revisione dei dati; copertura parziale nel prototipo (è registrato lo scenario, non la revisione del catalogo), da completare nel D2. \\
+RNF-11 & UC-01--UC-15 & US-01--US-17 & AC di US-01--US-17 & MU-Fig.1--11 & Usabilità del percorso decisionale; verificata con UF-01--UF-05. Soglia temporale da concordare (CH-TEPO-11). \\
+RNF-12 & UC-01, UC-02, UC-03, UC-08 & US-17 & AC-US17-01/02/03 & MU-Fig.1--11 & Trasparenza e integrità della provenienza. \\
+\end{longtable}
+\endgroup
+
+\paragraph{Legenda dei mockup.}
+Le voci \texttt{MU-Fig.$n$} indicano le schermate del prototipo riportate nella Sezione~\ref{sec:design}, che svolgono il ruolo dei mockup richiesti dalla guida.
+\begin{itemize}[leftmargin=1.4em, itemsep=0.15em]
+    \item \textbf{MU-Fig.1}: shell, navigazione e Dashboard nel registro Relazione.
+    \item \textbf{MU-Fig.2}: Dashboard nel registro Sala operativa.
+    \item \textbf{MU-Fig.3}: catalogo degli edifici.
+    \item \textbf{MU-Fig.4}: catalogo degli interventi.
+    \item \textbf{MU-Fig.5}: Scenario Builder.
+    \item \textbf{MU-Fig.6}: dossier del portafoglio proposto.
+    \item \textbf{MU-Fig.7}: confronto tra scenari A/B.
+    \item \textbf{MU-Fig.8}: mappa degli edifici.
+    \item \textbf{MU-Fig.9}: analisi di sensibilità.
+    \item \textbf{MU-Fig.10}: importazione CSV.
+    \item \textbf{MU-Fig.11}: adattamento responsivo del layout.
+\end{itemize}
+
+\paragraph{Esito della verifica.}
+Tutti i requisiti funzionali RF-01--RF-19 risultano collegati ad almeno un caso d'uso, una user story, i relativi criteri di accettazione e un mockup. Per gli RNF, i requisiti di determinismo, prestazioni, tracciabilità, interpretabilità, isolamento AI e trasparenza sono tracciati verso i mockup e gli use case pertinenti; i requisiti di isolamento del dominio e di manutenibilità sono motivati nella Sezione~\ref{sec:RNF} e verificati attraverso l'architettura e i test, non attraverso un artefatto visuale. La copertura dello snapshot immutabile (RNF-10) è parziale nel prototipo ed è esplicitamente rinviata al D2. Non sono presenti collegamenti ``da definire''.

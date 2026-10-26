@@ -1,0 +1,44 @@
+\section{Gestione delle modifiche dopo la baseline}
+\label{sec:modifiche}
+
+Questa sezione documenta le modifiche significative apportate alla baseline, riportandone una breve sintesi e il collegamento alle relative GitHub Issue, Pull Request o commit. La cronologia completa resta tracciata nel repository GitHub; il D1 è un \emph{living artifact} e il documento rappresenta lo stato corrente approvato.
+
+\subsection*{Tipi di modifica}
+\begin{itemize}[leftmargin=1.4em, itemsep=0.15em]
+    \item \textbf{Requirement Change:} modifica di un requisito funzionale o non funzionale.
+    \item \textbf{UC/US/AC Change:} modifica di un caso d'uso, di una user story, di un criterio di accettazione o dei mockup associati.
+    \item \textbf{Clarification:} rende esplicito un significato precedentemente ambiguo o incompleto.
+\end{itemize}
+
+\begingroup
+\scriptsize
+\setlength{\tabcolsep}{2pt}
+\begin{longtable}{L{1.85cm} L{1.8cm} L{3.95cm} L{1.5cm} L{3.1cm} L{2.2cm}}
+\caption{Registro delle modifiche di TEPO successive alla baseline.}\\
+\toprule
+\textbf{ID} & \textbf{Tipo} & \textbf{Descrizione} & \textbf{Origine} & \textbf{Artefatti impattati} & \textbf{GitHub / Stato} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{ID} & \textbf{Tipo} & \textbf{Descrizione} & \textbf{Origine} & \textbf{Artefatti impattati} & \textbf{GitHub / Stato} \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+
+CH-TEPO-01 & Clarification & La soglia di prestazione dell'ottimizzazione è riferita a 30 opzioni candidate (non 26 come inizialmente indicato), in coerenza con lo scenario canonico del prototipo. & Team review & \RNFref{rnf:prestazioni}; \USref{us:ottimizza}; AC-US07-03 & \#12 --- DONE \\
+CH-TEPO-02 & Requirement Change & Aggiunta esplicita, fra i limiti dichiarati, dell'assenza di pianificazione multi-anno e di frontiera di Pareto. & Stakeholder (debriefing) & Sezione~\ref{sec:progetto}; \RNFref{rnf:isolamento}; \RNFref{rnf:trasparenza} & \#18 --- DONE \\
+CH-TEPO-03 & Clarification & Chiarito che la componente AI può ricadere in modo automatico sul motore a regole qualora il provider esterno non sia configurato o non risponda. & Team review & \RFref{rf:ai_proposta}; \RNFref{rnf:ai_isolamento}; UC-13; AC-US14-02 & \#22 --- DONE \\
+CH-TEPO-04 & UC/US/AC Change & Ridisegno del pannello di proposta AI con evidenziazione degli interventi proposti come esclusi senza deselezione automatica. & User feedback interno & MU-Fig.5; \USref{us:ai_appr}; AC-US15-01/04 & \#25 --- DONE \\
+CH-TEPO-05 & Requirement Change & Introdotto requisito di snapshot immutabile delle revisioni dati (\RNFref{rnf:snapshot}) per garantire la ricostruibilità dei run di audit. & Audit interno & \RNFref{rnf:snapshot}; \RFref{rf:storico}; UC-09 & \#28 --- OPEN \\
+CH-TEPO-06 & Clarification & Chiarito che la pagina di sensibilità esegue uno sweep deterministico sul budget e non una simulazione Monte Carlo. & Team review & \RFref{rf:sensibilita}; \USref{us:sensibilita}; AC-US13-01 & \#31 --- DONE \\
+CH-TEPO-07 & UC/US/AC Change & Redesign completo del frontend (``Strumento Civico'', commit \texttt{d20b436}): shell con fascia di stato e indice numerato, due registri Relazione/Sala operativa, dashboard con percorso decisionale e dossier dell'ultimo risultato, dossier del risultato con audit strip, allocazione per edificio ed esploratore delle motivazioni, confronto A/B ridisegnato, mappa e sensibilità ridisegnate, stampa della relazione. & Team review & MU-Fig.1--11; \RFref{rf:tema}; \USref{us:tema}; \RNFref{rnf:compatibilita}; \RNFref{rnf:accessibilita}; \RNFref{rnf:usabilita} & commit \texttt{d20b436} --- DONE \\
+CH-TEPO-08 & Requirement Change & Allineamento della baseline alla guida D1 V1.2: aggiunti \RFref{rf:provenienza} (trasparenza), \RNFref{rnf:usabilita} (usabilità) e \RNFref{rnf:trasparenza} (provenienza del dato); aggiunte \USref{us:storico} e \USref{us:provenienza}; introdotti UC-09 e UC-15; completata la matrice di tracciabilità ed eliminati i collegamenti ``da definire''. & Guida D1 V1.2 / team review & \RFref{rf:provenienza}; \RNFref{rnf:usabilita}; \RNFref{rnf:trasparenza}; \USref{us:storico}; \USref{us:provenienza}; UC-09; UC-15; Sezione~\ref{sec:traceability} & commit \texttt{d20b436} --- DONE \\
+CH-TEPO-09 & Clarification & Sostituita la formulazione ``tema chiaro/scuro'' con i due registri di lettura ``Relazione'' e ``Sala operativa'', chiarita la persistenza della preferenza e la forzatura del registro Relazione in stampa. & Guida D1 V1.2 / team review & \RFref{rf:tema}; \USref{us:tema}; AC-US16-01/02/03 & commit \texttt{d20b436} --- DONE \\
+CH-TEPO-10 & Clarification & Chiarito che l'importazione CSV del prototipo riguarda i soli edifici (header a otto campi) e che l'importazione delle opzioni di intervento non è inclusa nell'MVP; aggiornati \RFref{rf:import_csv} e \USref{us:import}. & Guida D1 V1.2 / team review & \RFref{rf:import_csv}; \USref{us:import}; AC-US04-01/02 & commit \texttt{d20b436} --- DONE \\
+CH-TEPO-11 & Clarification & La soglia temporale della prova di usabilità di \RNFref{rnf:usabilita} non è fissata: la verifica osserverà il completamento del percorso senza formazione formale e la soglia sarà concordata con il committente. & Guida D1 V1.2 / team review & \RNFref{rnf:usabilita}; Sezione~\ref{sec:traceability} & commit \texttt{d20b436} --- OPEN \\
+\end{longtable}
+\endgroup
+
+\paragraph{Nota operativa.}
+Dopo la baseline, il D1 è un \emph{living artifact}: le modifiche significative vengono tracciate su GitHub e sottoposte a \emph{impact analysis}. Gli artefatti successivi (D2, codice, test) sono indicati come impattati solo se già esistenti al momento della modifica. La cronologia completa è mantenuta nel repository; questa sezione ne riporta la sintesi. Le modifiche CH-TEPO-05 (snapshot delle revisioni dati) e CH-TEPO-11 (soglia della prova di usabilità) restano aperte e saranno chiuse nel D2. Le righe CH-TEPO-07--11 sono riferite al commit \texttt{d20b436}; i numeri di Issue e Pull Request saranno allineati nel repository al momento della pubblicazione.

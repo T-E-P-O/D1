@@ -1,0 +1,206 @@
+\section{User Story}
+\label{sec:US}
+
+\textbf{Premessa:} le user story seguenti rappresentano gli obiettivi degli utenti rispetto ai requisiti della Sezione~\ref{sec:RF} e ai casi d'uso della Sezione~\ref{sec:UC}. Ogni user story ha un identificatore stabile, a partire da questa baseline, del tipo \texttt{US-01}, \texttt{US-02}, \ldots{} e ogni criterio di accettazione è identificato come \texttt{AC-US01-01}, \texttt{AC-US01-02}, \ldots{}; gli stessi identificatori sono mantenuti nella matrice di tracciabilità e negli artefatti successivi. In fase di implementazione alcune funzionalità potrebbero essere semplificate: eventuali differenze tra progettazione e implementazione saranno chiarite nel documento D2.
+
+% ---------------------------------------------------------------- US-01
+\US{Consultazione del catalogo degli edifici} \label{us:edifici}
+Come \textit{operatore tecnico del Comune} voglio consultare il catalogo degli edifici pubblici per individuare rapidamente gli immobili su cui sono già stati identificati interventi candidati e verificarne i dati di base. \\ (Riferito a \RFref{rf:catalogo_edifici}, \RFref{rf:provenienza}; UC-01.)
+
+\paragraph{Criteri di accettazione:}
+\begin{itemize}[leftmargin=1.4em]
+    \item \textbf{AC-US01-01:} Dato che l'utente accede alla pagina ``Edifici'', quando la pagina è caricata, allora il sistema mostra gli indicatori sintetici del catalogo e l'elenco completo degli edifici con identificativo, denominazione, indirizzo, comune, tipologia, superficie, numero di interventi associati e provenienza del dato.
+    \item \textbf{AC-US01-02:} Dato che l'utente è sulla pagina ``Edifici'', quando applica un filtro per tipologia oppure una ricerca testuale, allora il sistema mostra solo gli edifici corrispondenti e aggiorna il contatore ``$N$ di $M$ edifici''.
+    \item \textbf{AC-US01-03:} Dato che l'utente è sulla pagina ``Edifici'', quando attiva l'ordinamento di una colonna, allora il sistema ordina l'elenco e comunica lo stato di ordinamento agli strumenti assistivi.
+\end{itemize}
+
+% ---------------------------------------------------------------- US-02
+\US{Visualizzazione geografica degli edifici} \label{us:mappa}
+Come \textit{operatore tecnico del Comune} voglio visualizzare gli edifici su una mappa per comprenderne la distribuzione territoriale e valutare gli interventi in aree omogenee. \\ (Riferito a \RFref{rf:mappa}; UC-02.)
+
+\paragraph{Criteri di accettazione:}
+\begin{itemize}[leftmargin=1.4em]
+    \item \textbf{AC-US02-01:} Dato che l'utente accede alla pagina ``Mappa'', quando la pagina è caricata, allora il sistema mostra gli edifici come marcatori posizionati alle coordinate registrate, con dimensione proporzionale all'investimento associato.
+    \item \textbf{AC-US02-02:} Dato che l'utente visualizza la mappa con un ultimo risultato disponibile, quando i marcatori sono renderizzati, allora lo stato è codificato con colore, contorno e etichetta testuale (con interventi selezionati, selezionati ed esclusi, solo esclusi, non valutato).
+    \item \textbf{AC-US02-03:} Dato che l'utente cerca o seleziona un edificio dall'elenco accessibile, quando l'edificio è individuato, allora il sistema mostra il dettaglio con indirizzo, comune, tipologia, superficie, stato e interventi associati.
+\end{itemize}
+
+% ---------------------------------------------------------------- US-03
+\US{Consultazione e ricerca degli interventi} \label{us:interventi}
+Come \textit{operatore tecnico del Comune} voglio consultare e filtrare le opzioni di intervento disponibili per costruire un sottoinsieme di candidati ragionato. \\ (Riferito a \RFref{rf:catalogo_interventi}, \RFref{rf:filtri_interventi}; UC-03.)
+
+\paragraph{Criteri di accettazione:}
+\begin{itemize}[leftmargin=1.4em]
+    \item \textbf{AC-US03-01:} Dato che l'utente accede alla pagina ``Interventi candidati'', quando la pagina è caricata, allora il sistema mostra l'elenco degli interventi con edificio, tipologia, costo, risparmio energetico, risparmio economico, CO\textsubscript{2}, payback (stima demo), provenienza e stato rispetto all'ultimo risultato.
+    \item \textbf{AC-US03-02:} Dato che l'utente è sulla pagina ``Interventi candidati'', quando applica uno o più filtri (ricerca testuale, edificio, tipologia, intervallo di costo, stato nello scenario), allora il sistema mostra solo gli interventi che soddisfano tutti i criteri applicati.
+    \item \textbf{AC-US03-03:} Dato che la ricerca non produce risultati, quando l'elenco è vuoto, allora il sistema mostra un messaggio informativo e permette di azzerare i filtri.
+    \item \textbf{AC-US03-04:} Dato che non è stato eseguito alcuno scenario, quando l'utente consulta la colonna dello stato, allora tutte le opzioni risultano ``Non valutato'' e il sistema lo dichiara esplicitamente.
+\end{itemize}
+
+% ---------------------------------------------------------------- US-04
+\US{Importazione di edifici da CSV} \label{us:import}
+Come \textit{operatore tecnico del Comune} voglio poter caricare edifici da file CSV per non doverli inserire manualmente, mantenendo il controllo su ciò che viene scritto nel catalogo. \\ (Riferito a \RFref{rf:import_csv}; UC-04.)
+
+\paragraph{Criteri di accettazione:}
+\begin{itemize}[leftmargin=1.4em]
+    \item \textbf{AC-US04-01:} Dato che l'utente accede alla pagina ``Import'', quando carica un file o incolla un contenuto CSV e avvia la validazione, allora il sistema mostra un'anteprima delle righe valide, delle righe scartate e delle relative motivazioni senza modificare il database.
+    \item \textbf{AC-US04-02:} Dato che il sistema ha prodotto un'anteprima con almeno una riga valida, quando l'utente conferma l'importazione, allora il sistema persiste solo le righe valide e riporta il numero di record inseriti e scartati.
+    \item \textbf{AC-US04-03:} Dato che una riga contiene un valore numerico malformato, quando il sistema esegue la validazione, allora la riga viene scartata con motivazione esplicita e non viene interpretata come zero.
+    \item \textbf{AC-US04-04:} Dato che un identificativo è già presente nel catalogo, quando il sistema esegue la validazione, allora la riga viene rifiutata con la relativa motivazione; un identificativo ripetuto all'interno del file viene scartato in fase di conferma.
+\end{itemize}
+
+% ---------------------------------------------------------------- US-05
+\US{Configurazione di uno scenario di ottimizzazione} \label{us:scenario}
+Come \textit{operatore tecnico del Comune} voglio configurare uno scenario di ottimizzazione specificando budget, obiettivo e candidati per ottenere un portafoglio ottimo di interventi. \\ (Riferito a \RFref{rf:config_scenario}, \RFref{rf:candidati}; UC-05.)
+
+\paragraph{Criteri di accettazione:}
+\begin{itemize}[leftmargin=1.4em]
+    \item \textbf{AC-US05-01:} Dato che l'utente è nella pagina ``Scenario'', quando inserisce il budget, allora il sistema aggiorna il valore visualizzato e il riepilogo con costo selezionato, budget e residuo.
+    \item \textbf{AC-US05-02:} Dato che l'utente è nella pagina ``Scenario'', quando seleziona un obiettivo tra risparmio energetico, risparmio economico e riduzione di CO\textsubscript{2}, allora il sistema evidenzia l'obiettivo attivo e aggiorna l'unità di misura del beneficio.
+    \item \textbf{AC-US05-03:} Dato che l'utente è nella pagina ``Scenario'', quando seleziona o deseleziona candidati, allora il sistema aggiorna il contatore dei candidati selezionati e il costo complessivo.
+    \item \textbf{AC-US05-04:} Dato che l'utente ha configurato lo scenario, quando sceglie uno slot A o B e avvia l'ottimizzazione, allora il sistema salva il risultato nello slot scelto e lo rende disponibile per il confronto.
+\end{itemize}
+
+% ---------------------------------------------------------------- US-06
+\US{Definizione dei vincoli dello scenario} \label{us:vincoli}
+Come \textit{operatore tecnico del Comune} voglio specificare i vincoli dello scenario (incompatibilità, prerequisiti, numero massimo, inclusione ed esclusione) per riflettere i vincoli tecnici e di policy dell'Amministrazione. \\ (Riferito a \RFref{rf:vincoli_scenario}; UC-06.)
+
+\paragraph{Criteri di accettazione:}
+\begin{itemize}[leftmargin=1.4em]
+    \item \textbf{AC-US06-01:} Dato che l'utente è nella pagina ``Scenario'', quando aggiunge una coppia di opzioni incompatibili o una relazione di prerequisito, allora il sistema memorizza il vincolo e lo mostra nella lista dei vincoli correnti.
+    \item \textbf{AC-US06-02:} Dato che l'utente è nella pagina ``Scenario'', quando specifica un numero massimo di opzioni ammissibili su un sottoinsieme, allora il sistema memorizza il vincolo e lo rende visibile nel riepilogo.
+    \item \textbf{AC-US06-03:} Dato che l'utente tenta di salvare uno scenario con la stessa opzione contemporaneamente inclusa ed esclusa, oppure con un vincolo che fa riferimento a un'opzione inesistente, allora il sistema blocca il salvataggio e mostra un messaggio di errore specifico.
+    \item \textbf{AC-US06-04:} Dato che i vincoli sono stati modificati dopo un'esecuzione, quando l'utente consulta il risultato precedente, allora il sistema rende evidente che il risultato non è più valido per lo scenario corrente.
+\end{itemize}
+
+\noindent\textit{Nota:} nel prototipo attuale i vincoli del dataset demo sono precaricati e mostrati in sola lettura; le interazioni descritte rappresentano il comportamento previsto dalla baseline e saranno allineate nel D2.
+
+% ---------------------------------------------------------------- US-07
+\US{Esecuzione dell'ottimizzazione} \label{us:ottimizza}
+Come \textit{operatore tecnico del Comune} voglio eseguire l'ottimizzazione dello scenario per ottenere il portafoglio ottimo rispetto all'obiettivo scelto. \\ (Riferito a \RFref{rf:ottimizzazione}; UC-07.)
+
+\paragraph{Criteri di accettazione:}
+\begin{itemize}[leftmargin=1.4em]
+    \item \textbf{AC-US07-01:} Dato che lo scenario corrente è valido, quando l'utente richiede l'ottimizzazione, allora il sistema presenta il portafoglio selezionato, gli indicatori aggregati, lo stato del calcolo e la fascia di audit.
+    \item \textbf{AC-US07-02:} Dato che lo scenario corrente contiene opzioni candidate, quando l'utente esegue due volte l'ottimizzazione senza modificare i parametri, allora il sistema restituisce lo stesso portafoglio, gli stessi indicatori e lo stesso hash canonico del problema.
+    \item \textbf{AC-US07-03:} Dato che il calcolo supera il tempo massimo configurato, quando il sistema produce il risultato, allora lo stato riportato è ``Indeterminato per timeout'' e l'interfaccia non resta bloccata.
+    \item \textbf{AC-US07-04:} Dato che il problema è inammissibile o l'input non è conforme, quando il sistema restituisce l'esito, allora mostra rispettivamente ``Nessuna soluzione ammissibile'' o ``Modello non valido'' con la diagnostica disponibile, senza presentare un portafoglio come definitivo.
+\end{itemize}
+
+% ---------------------------------------------------------------- US-08
+\US{Consultazione del dossier di risultato} \label{us:risultato}
+Come \textit{operatore tecnico del Comune} voglio leggere il dossier del portafoglio proposto per verificare il risultato, l'audit del calcolo e la sua composizione. \\ (Riferito a \RFref{rf:risultati}; UC-08.)
+
+\paragraph{Criteri di accettazione:}
+\begin{itemize}[leftmargin=1.4em]
+    \item \textbf{AC-US08-01:} Dato che esiste un risultato, quando l'utente apre la pagina ``Risultato'', allora il sistema mostra l'audit strip con identificativo, hash, istante, stato del solver, prova di ottimalità e stato del tie-break.
+    \item \textbf{AC-US08-02:} Dato che il dossier è aperto, quando l'utente consulta gli indicatori, allora il sistema mostra investimento, budget residuo, risparmio energetico, risparmio economico, CO\textsubscript{2} evitata e numero di interventi con unità di misura esplicite.
+    \item \textbf{AC-US08-03:} Dato che il dossier è aperto, quando l'utente consulta il portafoglio, allora il sistema mostra gli interventi selezionati con edificio, investimento, risparmio energetico e motivazione, insieme all'impiego del budget e all'allocazione per edificio.
+    \item \textbf{AC-US08-04:} Dato che non esiste alcun risultato, quando l'utente apre la pagina ``Risultato'', allora il sistema mostra uno stato vuoto con l'azione ``Configura uno scenario''.
+\end{itemize}
+
+% ---------------------------------------------------------------- US-09
+\US{Consultazione delle spiegazioni} \label{us:spiegazioni}
+Come \textit{operatore tecnico del Comune} voglio leggere la motivazione della selezione o dell'esclusione di ciascun intervento per poter giustificare la scelta in sede amministrativa. \\ (Riferito a \RFref{rf:spiegazioni}; UC-08.)
+
+\paragraph{Criteri di accettazione:}
+\begin{itemize}[leftmargin=1.4em]
+    \item \textbf{AC-US09-01:} Dato che l'utente visualizza il dossier, quando apre la sezione ``Perché questa soluzione?'', allora il sistema mostra per ciascuna opzione candidata la categoria di motivazione e i valori che la giustificano.
+    \item \textbf{AC-US09-02:} Dato che un'opzione è stata esclusa per budget, quando l'utente consulta la spiegazione, allora la categoria mostrata è ``budget complessivo'' oppure ``budget residuo'', coerentemente con la causa effettiva.
+    \item \textbf{AC-US09-03:} Dato che la causa dell'esclusione non è localmente dimostrabile, quando l'utente consulta la spiegazione, allora la categoria mostrata è ``causa non determinata'' e il sistema chiarisce che non si tratta di una prova di causalità globale.
+    \item \textbf{AC-US09-04:} Dato che l'utente vuole esplorare le motivazioni, quando applica i filtri per famiglia di causa o la ricerca testuale, allora il sistema mostra solo le opzioni corrispondenti.
+\end{itemize}
+
+% ---------------------------------------------------------------- US-10
+\US{Consultazione dello storico delle esecuzioni} \label{us:storico}
+Come \textit{operatore tecnico del Comune} voglio consultare lo storico delle ottimizzazioni eseguite per riconoscere un calcolo precedente e ricostruirne il contesto. \\ (Riferito a \RFref{rf:storico}; UC-09.)
+
+\paragraph{Criteri di accettazione:}
+\begin{itemize}[leftmargin=1.4em]
+    \item \textbf{AC-US10-01:} Dato che è stata eseguita almeno un'ottimizzazione, quando l'utente apre la dashboard, allora il sistema mostra il registro delle esecuzioni con istante, esito, obiettivo, identificativo e investimento.
+    \item \textbf{AC-US10-02:} Dato che il registro è visibile, quando l'utente consulta un'esecuzione, allora il sistema mostra istante, esito, obiettivo, identificativo e investimento; il dettaglio completo è disponibile nel dossier dell'ultimo risultato e tramite le API.
+    \item \textbf{AC-US10-03:} Dato che l'utente interroga lo storico tramite le API, quando richiede le esecuzioni di uno scenario, allora il sistema restituisce i dati di audit disponibili in sola lettura, senza consentire modifiche o cancellazioni dall'interfaccia.
+    \item \textbf{AC-US10-04:} Dato che non esistono esecuzioni, quando l'utente apre il registro, allora il sistema mostra ``Nessuna esecuzione registrata''.
+\end{itemize}
+
+% ---------------------------------------------------------------- US-11
+\US{Salvataggio di due scenari A/B e what-if} \label{us:salva_ab}
+Come \textit{operatore tecnico del Comune} voglio salvare due alternative di investimento in due slot di confronto e duplicarne una come what-if per poterle confrontare e modificare senza perdere l'originale. \\ (Riferito a \RFref{rf:scenari_salvati}; UC-10.)
+
+\paragraph{Criteri di accettazione:}
+\begin{itemize}[leftmargin=1.4em]
+    \item \textbf{AC-US11-01:} Dato che l'utente ha eseguito un'ottimizzazione, quando salva il risultato nello slot A o B, allora il sistema memorizza il risultato nello slot scelto e ne indica l'occupazione e l'importo nella sessione.
+    \item \textbf{AC-US11-02:} Dato che lo slot A è popolato, quando l'utente salva un nuovo risultato nello slot B, allora il sistema mantiene invariato il contenuto dello slot A.
+    \item \textbf{AC-US11-03:} Dato che uno slot è popolato, quando l'utente richiede di duplicarlo come what-if, allora il sistema apre lo Scenario Builder con i parametri salvati senza modificare l'originale.
+    \item \textbf{AC-US11-04:} Dato che l'utente azzera la sessione, quando conferma l'operazione, allora il sistema rimuove slot e ultimo risultato e mostra una conferma non bloccante.
+\end{itemize}
+
+% ---------------------------------------------------------------- US-12
+\US{Confronto tra due scenari} \label{us:confronto}
+Come \textit{decisore comunale} voglio confrontare due scenari A e B per valutare alternative di allocazione del budget con indicatori omogenei. \\ (Riferito a \RFref{rf:confronto}; UC-11.)
+
+\paragraph{Criteri di accettazione:}
+\begin{itemize}[leftmargin=1.4em]
+    \item \textbf{AC-US12-01:} Dato che entrambi gli slot A e B sono popolati, quando l'utente accede alla pagina ``Confronto'', allora il sistema mostra i parametri e gli indicatori aggregati di entrambi.
+    \item \textbf{AC-US12-02:} Dato che entrambi gli scenari sono visualizzati, quando il sistema mostra gli indicatori, allora evidenzia gli scostamenti calcolati come $B - A$ per investimento, risparmio energetico, risparmio economico, CO\textsubscript{2} e numero di interventi.
+    \item \textbf{AC-US12-03:} Dato che gli scenari hanno obiettivi diversi, quando il confronto è mostrato, allora il sistema visualizza un avviso che invita a leggere i delta come differenza descrittiva e non come preferenza.
+    \item \textbf{AC-US12-04:} Dato che il confronto è aperto, quando l'utente consulta le sezioni dedicate, allora il sistema mostra gli interventi aggiunti in B e quelli rimossi rispetto ad A.
+\end{itemize}
+
+% ---------------------------------------------------------------- US-13
+\US{Analisi di sensibilità sul budget} \label{us:sensibilita}
+Come \textit{operatore tecnico del Comune} voglio analizzare come cambia il portafoglio ottimo al variare del budget per individuare le scelte stabili e quelle che dipendono dalle risorse disponibili. \\ (Riferito a \RFref{rf:sensibilita}; UC-12.)
+
+\paragraph{Criteri di accettazione:}
+\begin{itemize}[leftmargin=1.4em]
+    \item \textbf{AC-US13-01:} Dato che l'utente apre la pagina ``Sensibilità'', quando consulta il form, allora il sistema mostra budget base, obiettivo, numero di punti (3--51) e fattori minimo e massimo, insieme alla nota metodologica.
+    \item \textbf{AC-US13-02:} Dato che l'utente avvia l'analisi, quando lo sweep è concluso, allora il sistema mostra per ciascun punto budget, stato del solver, investimento, budget residuo, valore dell'obiettivo e numero di interventi.
+    \item \textbf{AC-US13-03:} Dato che lo sweep è concluso, quando l'utente consulta la stabilità, allora il sistema classifica ciascuna opzione come ``sempre selezionata'', ``mai selezionata'' oppure ``oscillante''.
+    \item \textbf{AC-US13-04:} Dato che i parametri della griglia non sono validi, quando l'utente tenta di avviare l'analisi, allora il sistema impedisce l'esecuzione e indica il vincolo violato.
+\end{itemize}
+
+% ---------------------------------------------------------------- US-14
+\US{Proposta assistita dall'AI} \label{us:ai}
+Come \textit{operatore tecnico del Comune} voglio descrivere a parole l'obiettivo che ho in mente per ottenere una proposta preliminare di configurazione dello scenario, così da ridurre il tempo necessario a impostarla. \\ (Riferito a \RFref{rf:ai_proposta}; UC-13.)
+
+\paragraph{Criteri di accettazione:}
+\begin{itemize}[leftmargin=1.4em]
+    \item \textbf{AC-US14-01:} Dato che l'utente digita una richiesta in linguaggio naturale, quando invia la richiesta, allora il sistema restituisce una proposta con budget, obiettivo e insieme di candidati, corredata da motivazione, origine e segnalazioni.
+    \item \textbf{AC-US14-02:} Dato che il componente esterno non è configurato, quando l'utente invia la richiesta, allora il sistema produce comunque una proposta attraverso il motore a regole e ne indica esplicitamente l'origine.
+    \item \textbf{AC-US14-03:} Dato che la proposta contiene identificativi non presenti nel catalogo, quando il sistema la elabora, allora li filtra e segnala l'evento nelle avvertenze.
+    \item \textbf{AC-US14-04:} Dato che l'utente non ha ancora approvato la proposta, quando consulta lo scenario, allora i parametri dello scenario corrente non sono stati modificati.
+\end{itemize}
+
+% ---------------------------------------------------------------- US-15
+\US{Approvazione umana della proposta AI} \label{us:ai_appr}
+Come \textit{operatore tecnico del Comune} voglio poter accettare, modificare o rifiutare esplicitamente una proposta AI prima che questa venga applicata allo scenario, per mantenere il pieno controllo sulle decisioni. \\ (Riferito a \RFref{rf:ai_approvazione}; UC-14.)
+
+\paragraph{Criteri di accettazione:}
+\begin{itemize}[leftmargin=1.4em]
+    \item \textbf{AC-US15-01:} Dato che il sistema ha prodotto una proposta AI, quando l'utente la visualizza, allora la proposta non è applicata automaticamente e il sistema dichiara che richiede revisione umana.
+    \item \textbf{AC-US15-02:} Dato che l'utente clicca ``Applica allo scenario'', quando i parametri della proposta sono validi, allora il sistema aggiorna budget, obiettivo e selezione e mostra l'avviso di verifica prima dell'ottimizzazione.
+    \item \textbf{AC-US15-03:} Dato che l'utente clicca ``Rifiuta'', quando la proposta è rifiutata, allora lo scenario corrente resta invariato e la proposta viene rimossa dal pannello.
+    \item \textbf{AC-US15-04:} Dato che la proposta suggerisce di escludere alcuni interventi, quando l'utente la esamina, allora tali interventi sono evidenziati ma restano selezionati finché l'utente non decide diversamente.
+\end{itemize}
+
+% ---------------------------------------------------------------- US-16
+\US{Registro di visualizzazione e stampa della relazione} \label{us:tema}
+Come \textit{utente} voglio scegliere il registro di lettura più adatto al contesto (Relazione o Sala operativa) e stampare la relazione del risultato per condividere il lavoro in riunione o in sede amministrativa. \\ (Riferito a \RFref{rf:tema}, \RFref{rf:risultati}; UC-15.)
+
+\paragraph{Criteri di accettazione:}
+\begin{itemize}[leftmargin=1.4em]
+    \item \textbf{AC-US16-01:} Dato che l'utente attiva il cambio registro, quando il registro corrente è ``Relazione'', allora il sistema applica ``Sala operativa'' (e viceversa) mantenendo invariati layout e informazione.
+    \item \textbf{AC-US16-02:} Dato che l'utente ha selezionato un registro, quando chiude e riapre l'applicazione, allora il sistema mantiene la scelta; alla prima apertura usa la preferenza del sistema operativo.
+    \item \textbf{AC-US16-03:} Dato che l'utente richiede la stampa dal dossier o dal confronto, quando si apre il dialogo di stampa, allora il sistema prepara un documento a fondo chiaro con inchiostro scuro, senza navigazione e controlli, con tabelle e pannelli leggibili.
+\end{itemize}
+
+% ---------------------------------------------------------------- US-17
+\US{Trasparenza sulla provenienza dei dati} \label{us:provenienza}
+Come \textit{utente} voglio riconoscere in ogni momento la natura e la provenienza dei dati che sto leggendo, per non confondere un risultato dimostrativo con una misura ufficiale. \\ (Riferito a \RFref{rf:provenienza}; UC-01, UC-02, UC-03, UC-08.)
+
+\paragraph{Criteri di accettazione:}
+\begin{itemize}[leftmargin=1.4em]
+    \item \textbf{AC-US17-01:} Dato che l'utente consulta l'applicazione, quando la fascia di stato è visibile, allora il sistema mostra il timbro ``DEMO --- dati sintetici'' e il piè di pagina riporta fonte del dataset, modello e ultima esecuzione.
+    \item \textbf{AC-US17-02:} Dato che l'utente consulta edifici o interventi, quando legge una riga, allora il sistema mostra la provenienza del dato (reale, sintetica o mista) e, per il payback, l'etichetta di stima demo.
+    \item \textbf{AC-US17-03:} Dato che l'utente consulta il dossier o la mappa, quando legge indicatori o marcatori, allora il sistema non presenta i valori sintetici come misure ufficiali e rende riconoscibile la natura demo anche nei viewport più piccoli tramite il piè di pagina di provenienza.
+\end{itemize}

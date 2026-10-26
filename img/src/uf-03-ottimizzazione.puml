@@ -1,0 +1,32 @@
+@startuml
+skinparam dpi 170
+skinparam shadowing false
+skinparam defaultFontName "Verdana"
+skinparam defaultFontSize 13
+skinparam roundcorner 0
+skinparam ActivityBackgroundColor #FBFAF6
+skinparam ActivityBorderColor #7F7A6B
+skinparam ActivityFontColor #17191C
+skinparam ActivityDiamondBackgroundColor #F3F1EA
+skinparam ActivityDiamondBorderColor #96412C
+skinparam ActivityDiamondFontColor #17191C
+skinparam ArrowColor #7F7A6B
+
+
+start
+:Richiedere l'ottimizzazione;
+:Il sistema invoca il solver CP-SAT\ne registra l'esecuzione;
+:Leggere stato del solver e audit strip\n(runId, hash, orario, tie-break);
+if (Soluzione disponibile?) then (sì)
+  :Esaminare KPI e interventi selezionati;
+  :Leggere le motivazioni\n(barriere locali / causa non determinata);
+  :Esplorare gli interventi esclusi;
+  if (Stampare la relazione?) then (sì)
+    :Stampa in registro Relazione;
+  else (no)
+  endif
+else (no)
+  :Leggere la diagnostica\n(inammissibile, timeout, modello non valido);
+endif
+stop
+@enduml

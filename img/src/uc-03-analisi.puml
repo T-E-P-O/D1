@@ -1,0 +1,48 @@
+@startuml
+skinparam dpi 170
+skinparam shadowing false
+skinparam defaultFontName "Verdana"
+skinparam defaultFontSize 13
+skinparam roundcorner 0
+skinparam usecase {
+  BackgroundColor #FBFAF6
+  BorderColor #7F7A6B
+  FontColor #17191C
+}
+skinparam actor {
+  BackgroundColor #F3F1EA
+  BorderColor #17191C
+  FontColor #17191C
+}
+skinparam rectangle {
+  BackgroundColor #FFFFFF
+  BorderColor #A9A28F
+  FontColor #17191C
+}
+left to right direction
+
+actor "Operatore Tecnico" as OT
+actor "Decisore Comunale" as DC
+actor "Assistente AI\n(opzionale)" as AI <<sistema>>
+
+rectangle "TEPO" {
+  usecase "UC-10\nSalvare scenari A/B\ne duplicare come what-if" as UC10
+  usecase "UC-11\nConfrontare due\nscenari" as UC11
+  usecase "UC-12\nAnalizzare la sensibilità\nsul budget" as UC12
+  usecase "UC-13\nOttenere una proposta\nassistita dall'AI" as UC13
+  usecase "UC-14\nApprovare o rifiutare\nla proposta AI" as UC14
+  usecase "UC-08\nConsultare il dossier\ne le spiegazioni" as UC08
+}
+
+OT --> UC10
+OT --> UC11
+OT --> UC12
+OT --> UC13
+OT --> UC14
+OT --> UC08
+DC --> UC08
+DC --> UC11
+UC11 ..> UC08 : <<include>>
+UC13 ..> AI : <<include>>
+UC14 .> UC13 : <<extend>>
+@enduml

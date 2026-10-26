@@ -1,0 +1,44 @@
+@startuml
+skinparam dpi 170
+skinparam shadowing false
+skinparam defaultFontName "Verdana"
+skinparam defaultFontSize 13
+skinparam roundcorner 0
+skinparam usecase {
+  BackgroundColor #FBFAF6
+  BorderColor #7F7A6B
+  FontColor #17191C
+}
+skinparam actor {
+  BackgroundColor #F3F1EA
+  BorderColor #17191C
+  FontColor #17191C
+}
+skinparam rectangle {
+  BackgroundColor #FFFFFF
+  BorderColor #A9A28F
+  FontColor #17191C
+}
+left to right direction
+
+actor "Operatore Tecnico" as OT
+actor "Motore di ottimizzazione\n(CP-SAT)" as SOLVER <<sistema>>
+
+rectangle "TEPO — scenario e decisione" {
+  usecase "UC-05\nConfigurare uno\nscenario" as UC05
+  usecase "UC-06\nDefinire i vincoli\ndello scenario" as UC06
+  usecase "UC-07\nEseguire\nl'ottimizzazione" as UC07
+  usecase "UC-08\nConsultare il dossier\ne le spiegazioni" as UC08
+  usecase "UC-09\nConsultare lo storico\ndelle esecuzioni" as UC09
+  usecase "UC-15\nCambiare registro\ne stampare la relazione" as UC15
+}
+
+OT --> UC05
+OT --> UC06
+OT --> UC07
+OT --> UC08
+OT --> UC09
+OT --> UC15
+UC06 .> UC05 : <<extend>>
+UC07 ..> SOLVER : <<include>>
+@enduml

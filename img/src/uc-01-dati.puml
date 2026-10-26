@@ -1,0 +1,39 @@
+@startuml
+skinparam dpi 170
+skinparam shadowing false
+skinparam defaultFontName "Verdana"
+skinparam defaultFontSize 13
+skinparam roundcorner 0
+skinparam usecase {
+  BackgroundColor #FBFAF6
+  BorderColor #7F7A6B
+  FontColor #17191C
+}
+skinparam actor {
+  BackgroundColor #F3F1EA
+  BorderColor #17191C
+  FontColor #17191C
+}
+skinparam rectangle {
+  BackgroundColor #FFFFFF
+  BorderColor #A9A28F
+  FontColor #17191C
+}
+left to right direction
+
+actor "Operatore Tecnico" as OT
+actor "Servizio mappe\n(Esri)" as MAP <<sistema>>
+
+rectangle "TEPO — catalogo e dati" {
+  usecase "UC-01\nConsultare il catalogo\ndegli edifici" as UC01
+  usecase "UC-02\nVisualizzare gli edifici\nsulla mappa" as UC02
+  usecase "UC-03\nConsultare e filtrare\nil catalogo degli interventi" as UC03
+  usecase "UC-04\nImportare dati di\ncatalogo da CSV" as UC04
+}
+
+OT --> UC01
+OT --> UC02
+OT --> UC03
+OT --> UC04
+UC02 ..> MAP : <<include>>
+@enduml

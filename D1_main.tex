@@ -1,0 +1,269 @@
+\documentclass[12pt, a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[italian]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{amsmath, amssymb}
+\usepackage{geometry}
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{eurosym}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{titlesec}
+\usepackage{tcolorbox}
+\usepackage{hyphenat}
+\usepackage{tocloft}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{datetime}
+\usepackage{array}
+\usepackage{float}
+\usepackage{listings}
+\usepackage{longtable}
+\usepackage{pdflscape}
+\usepackage{fancyhdr}
+\usepackage{refcount}
+
+% Colonna di tabella allineata a sinistra, senza giustificazione forzata.
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+
+% --- CONFIGURAZIONE LISTINGS ---
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codegreen}{rgb}{0.1,0.5,0.1}
+\definecolor{codeblue}{rgb}{0.1,0.1,0.6}
+\lstset{
+  basicstyle=\ttfamily\small,
+  keywordstyle=\color{codeblue}\bfseries,
+  commentstyle=\color{codegreen}\itshape,
+  stringstyle=\color{codegray},
+  frame=single,
+  breaklines=true,
+  showstringspaces=false,
+  captionpos=b,
+  columns=fullflexible,
+  keepspaces=true
+}
+
+% --- CONTATORI E COMANDI PER REQUISITI, USER STORY E USER FLOW ---
+\makeatletter
+
+% Livelli personalizzati per l'indice
+\def\toclevel@RF{2}
+\def\toclevel@subRF{3}
+\def\toclevel@RNF{2}
+\def\toclevel@subRNF{3}
+\def\toclevel@US{2}
+\def\toclevel@UF{2}
+
+\newcommand{\l@RF}[2]{\begingroup\small\@dottedtocline{2}{1.5em}{2.3em}{#1}{#2}\endgroup}
+\newcommand{\l@subRF}[2]{\begingroup\small\@dottedtocline{3}{3.8em}{3.4em}{#1}{#2}\endgroup}
+\newcommand{\l@RNF}[2]{\begingroup\small\@dottedtocline{2}{1.5em}{2.3em}{#1}{#2}\endgroup}
+\newcommand{\l@subRNF}[2]{\begingroup\small\@dottedtocline{3}{3.8em}{3.4em}{#1}{#2}\endgroup}
+\newcommand{\l@US}[2]{\begingroup\small\@dottedtocline{2}{1.5em}{2.3em}{#1}{#2}\endgroup}
+\newcommand{\l@UF}[2]{\begingroup\small\@dottedtocline{2}{1.5em}{2.3em}{#1}{#2}\endgroup}
+
+% --- Formato delle sezioni ---
+\titleformat{\section}
+  {\normalfont\LARGE\bfseries}
+  {\thesection}
+  {6pt}
+  {}
+
+% --- Requisiti funzionali (RF) ---
+\newcounter{reqfunc}
+\newcounter{subRFcounter}[reqfunc]
+\renewcommand{\thesubRFcounter}{\arabic{reqfunc}.\arabic{subRFcounter}}
+
+% Numero a due cifre (RF-01, RNF-01, US-01, UF-01)
+\newcommand{\twodigits}[1]{\ifnum#1<10 0\fi\number#1}
+
+\newcommand{\RF}[1]{%
+  \refstepcounter{reqfunc}%
+  \setcounter{subRFcounter}{0}%
+  \addcontentsline{toc}{RF}{RF-\twodigits{\arabic{reqfunc}}: #1}%
+  \paragraph*{RF-\twodigits{\arabic{reqfunc}}: #1}%
+}
+
+\newcommand{\subRF}[1]{%
+  \refstepcounter{subRFcounter}%
+  \addcontentsline{toc}{subRF}{RF \thesubRFcounter: #1}%
+  \noindent\hspace{1.5em}\textbf{RF \thesubRFcounter:} #1\par
+}
+
+% --- Requisiti non funzionali (RNF) ---
+\newcounter{reqnonfunc}
+\newcounter{subRNFcounter}[reqnonfunc]
+\renewcommand{\thesubRNFcounter}{\arabic{reqnonfunc}.\arabic{subRNFcounter}}
+
+\newcommand{\RNF}[1]{%
+  \refstepcounter{reqnonfunc}%
+  \setcounter{subRNFcounter}{0}%
+  \addcontentsline{toc}{RNF}{RNF-\twodigits{\arabic{reqnonfunc}}: #1}%
+  \paragraph*{RNF-\twodigits{\arabic{reqnonfunc}}: #1}%
+}
+
+\newcommand{\subRNF}[1]{%
+  \refstepcounter{subRNFcounter}%
+  \addcontentsline{toc}{subRNF}{RNF \thesubRNFcounter: #1}%
+  \noindent\hspace{1.5em}\textbf{RNF \thesubRNFcounter:} #1\par
+}
+
+% --- User story (US) ---
+\newcounter{userStories}
+
+\newcommand{\US}[1]{%
+  \refstepcounter{userStories}%
+  \addcontentsline{toc}{US}{US-\twodigits{\arabic{userStories}}: #1}%
+  \subsection*{US-\twodigits{\arabic{userStories}} --- #1}%
+}
+
+% --- User flow (UF) ---
+\newcounter{userFlows}
+
+\newcommand{\UF}[1]{%
+  \refstepcounter{userFlows}%
+  \addcontentsline{toc}{UF}{UF-\twodigits{\arabic{userFlows}}: #1}%
+  \subsection*{UF-\twodigits{\arabic{userFlows}} --- #1}%
+}
+
+\makeatother
+
+% Riferimenti nel formato stabile RF-01, RNF-01, US-01, UF-01.
+\newcommand{\RFref}[1]{RF-\twodigits{\getrefnumber{#1}}}
+\newcommand{\RNFref}[1]{RNF-\twodigits{\getrefnumber{#1}}}
+\newcommand{\USref}[1]{US-\twodigits{\getrefnumber{#1}}}
+\newcommand{\UFref}[1]{UF-\twodigits{\getrefnumber{#1}}}
+
+\newcommand{\myfootertext}{}
+\newcommand{\myicon}{logo_unitn_chiaro.png}
+\newcommand{\myappicon}{logo_app.png}
+
+\definecolor{lightergray}{gray}{0.35}
+\definecolor{tocsec}{gray}{0.35}
+\definecolor{tocsubsec}{gray}{0.45}
+\pagecolor{white}
+\color{black}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=lightergray,
+    urlcolor=cyan,
+    pdftitle={TEPO --- D1},
+    pdfauthor={Gruppo T14},
+    pdfsubject={Documento di Requirements Engineering --- baseline},
+    pdfkeywords={TEPO, requisiti, use case, user story, energy portfolio optimization}
+}
+
+\renewcommand{\cftsecfont}{\color{tocsec}\bfseries}
+\renewcommand{\cftsecpagefont}{\color{tocsec}\bfseries}
+\renewcommand{\cftsubsecfont}{\color{tocsubsec}}
+\renewcommand{\cftsubsecpagefont}{\color{tocsubsec}}
+\renewcommand{\cftsubsecleader}{\color{tocsubsec}\cftdotfill{\cftdotsep}}
+
+\geometry{margin=2.5cm,headheight=24.5pt}
+\setlength{\parskip}{0.35em}
+\renewcommand{\arraystretch}{1.2}
+
+% --- Intestazione e piè di pagina ---
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{tocsubsec}TEPO --- D1}
+\fancyhead[R]{\small\color{tocsubsec}Gruppo T14}
+\fancyfoot[C]{\small\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\headrule}{\hbox to\headwidth{\color{tocsubsec}\leaders\hrule height \headrulewidth\hfill}}
+\fancypagestyle{plain}{\fancyhf{}\fancyfoot[C]{\small\thepage}\renewcommand{\headrulewidth}{0pt}}
+
+\begin{document}
+
+\begin{titlepage}
+    \thispagestyle{empty}
+    % --- Loghi in alto (centrati, stessa riga) ---
+    \begin{center}
+        \href{https://www.unitn.it/}{%
+            \includegraphics[height=3.5cm, keepaspectratio]{\myicon}%
+        }%
+        \hspace{1.5cm}%
+        \href{https://github.com/T-E-P-O/D1}{%
+            \includegraphics[height=3.5cm, keepaspectratio]{\myappicon}%
+        }%
+    \end{center}
+
+    \vspace{1.2cm}
+
+    % --- Titolo e Dipartimento (Allineati a sinistra) ---
+    \begin{flushleft}
+        {\scshape\Large Università degli Studi di Trento \par}
+        {\large Dipartimento di Ingegneria e Scienza dell'Informazione \par}
+
+        \vspace{1.3cm}
+
+        {\Huge\bfseries TEPO --- D1 \par}
+        \vspace{0.3cm}
+        {\Large\itshape Trento Energy Portfolio Optimizer \par}
+        \vspace{0.35cm}
+        {\large Documento di Requirements Engineering --- baseline \par}
+        \vspace{0.5cm}
+        {\color{cyan}\rule{\textwidth}{2pt}}
+    \end{flushleft}
+
+    \vspace{0.7cm}
+
+    % --- Document Info (come da template D1) ---
+    \begin{flushleft}
+        {\small
+        \renewcommand{\arraystretch}{1.25}
+        \begin{tabular}{@{}p{3.1cm}p{11.7cm}@{}}
+            \textbf{Doc. Name} & TEPO --- D1, Descrizione di Progetto \\
+            \textbf{Description} & Documento di Requirements Engineering: progetto, requisiti funzionali e non funzionali, use case, user story, acceptance criteria, mockup e traceability. \\
+        \end{tabular}}
+    \end{flushleft}
+
+    \vspace{0.9cm}
+
+    % --- Gruppo e autori ---
+    \begin{flushleft}
+        {\Large \textbf{Gruppo T14} \par}
+        \vspace{0.3cm}
+        \renewcommand{\arraystretch}{1.3}
+        \begin{tabular}{@{}l}
+            \Large \href{https://github.com/mirconegri}{Mirco Negri} \\
+            \Large \href{https://github.com/ghebbb}{Gabriele Duca} \\
+            \Large \href{https://github.com/scheddiee}{Riccardo Scheda} \\
+        \end{tabular}
+    \end{flushleft}
+
+    \vfill
+
+    % --- Piè di pagina ---
+    \begin{flushleft}
+        {\small Corso di Ingegneria del Software --- A.A. 2026/2027 \par}
+        {\small Progetto nell'ambito dell'iniziativa ``100 progetti per il Comune di Trento'' \par}
+        \vspace{0.2cm}
+        {\small\textit{\myfootertext} \par}
+        {\large \today \par}
+    \end{flushleft}
+\end{titlepage}
+
+\newpage
+\begingroup
+\hypersetup{hidelinks}
+\tableofcontents
+\endgroup
+
+\newpage
+
+\include{sections/Il_nostro_progetto}
+\include{sections/RF}
+\include{sections/RNF}
+\include{sections/UD}
+\include{sections/US}
+\include{sections/DesignFrontEnd}
+\include{sections/UF}
+\include{sections/Traceability}
+\include{sections/GestioneModifiche}
+
+\end{document}

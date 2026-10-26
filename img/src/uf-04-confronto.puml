@@ -1,0 +1,31 @@
+@startuml
+skinparam dpi 170
+skinparam shadowing false
+skinparam defaultFontName "Verdana"
+skinparam defaultFontSize 13
+skinparam roundcorner 0
+skinparam ActivityBackgroundColor #FBFAF6
+skinparam ActivityBorderColor #7F7A6B
+skinparam ActivityFontColor #17191C
+skinparam ActivityDiamondBackgroundColor #F3F1EA
+skinparam ActivityDiamondBorderColor #96412C
+skinparam ActivityDiamondFontColor #17191C
+skinparam ArrowColor #7F7A6B
+
+
+start
+:Salvare il risultato corrente in A e in B;
+if (Due scenari disponibili?) then (sì)
+  :Aprire la pagina Confronto;
+  :Leggere i delta calcolati come B − A;
+  if (Gli obiettivi sono diversi?) then (sì)
+    :Interpretare i delta come differenza descrittiva,\nnon come preferenza;
+  else (no)
+  endif
+  :Esaminare interventi aggiunti e rimossi;
+  :Duplicare uno scenario come what-if;
+else (no)
+  :Completare il secondo scenario;
+endif
+stop
+@enduml
