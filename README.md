@@ -20,7 +20,7 @@ Il presente documento costituisce la baseline formale di specifica dei requisiti
    - Prospettive di sviluppo futuro e integrazione con flussi dati reali del Comune.
    - **Giustificazione architetturale dello stack tecnologico:** analisi di trade-off didattica e tecnica su Java 21 + Google OR-Tools CP-SAT rispetto a Node.js, PostgreSQL con Flyway rispetto a MongoDB, e React con TypeScript rispetto a JavaScript puro.
 2. **Requisiti Funzionali e Non Funzionali** (`sections/RF.tex`, `sections/RNF.tex`):
-   - Specifica dei 16 requisiti funzionali e dei vincoli di qualità (accessibilità WCAG 2.1 AA, prestazioni sub-secondo, affidabilità, licenza, usabilità).
+   - Specifica dei 19 requisiti funzionali e dei 12 requisiti non funzionali di qualità (accessibilità WCAG 2.1 AA, prestazioni sub-secondo, affidabilità, licenza, usabilità).
 3. **Use Cases e Diagrammi UML** (`sections/UD.tex`, `img/src/`):
    - 15 casi d'uso dettagliati con pre-condizioni, flusso primario, estensioni e diagrammi PlantUML.
 4. **User Stories** (`sections/US.tex`):
