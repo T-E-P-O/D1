@@ -100,10 +100,38 @@ Le spiegazioni prodotte da TEPO sono deterministiche e verificabili, ma sono \em
 L'assistente AI è un supporto alla configurazione, non un decisore: propone parametri a partire da una richiesta in linguaggio naturale, non calcola risultati e non ha accesso in scrittura ai dati. Ogni chiamata è indipendente (non c'è gestione di una conversazione multi-turno) e non esiste alcun addestramento su dati del Comune. Se il provider esterno non è configurato o non risponde, l'applicazione ricade sul motore a regole locale e lo segnala all'utente.
 
 \paragraph{Prototipo, non prodotto}
-Il sistema non dispone di autenticazione, gestione dei ruoli o multi-utenza: è pensato per un uso locale di dimostrazione. Gli scenari A/B e l'ultimo risultato sono conservati nella sessione del browser e vengono persi alla chiusura della scheda; il tema scelto, invece, è memorizzato in modo persistente. La configurazione attuale non è pensata per un esercizio reale in produzione.
+Il sistema non dispone di autenticazione, gestione dei ruoli o multi-utenza: è pensato per un uso locale e dimostrativo. Un prototipo interattivo funzionante è accessibile pubblicamente online all'indirizzo \url{https://tepo.onrender.com}, mentre il repository del codice sorgente è disponibile all'indirizzo \url{https://github.com/T-E-P-O/TEPO}. Gli scenari A/B e l'ultimo risultato sono conservati nella sessione del browser e vengono persi alla chiusura della scheda; il tema scelto, invece, è memorizzato in modo persistente. La configurazione attuale non è pensata per un esercizio reale in produzione.
 
 \paragraph{Prestazioni e scalabilità limitate al dataset di riferimento}
 Le prestazioni dichiarate nei requisiti non funzionali sono riferite allo scenario canonico del prototipo e al dataset demo. Non è stato eseguito un collaudo di carico su cataloghi molto più grandi o su più utenti concorrenti, e l'analisi di sensibilità esegue una sequenza di ottimizzazioni indipendenti: all'aumentare dei punti e dei candidati i tempi di risposta crescono.
 
 \paragraph{Non sostituisce il giudizio tecnico e amministrativo}
 TEPO non calcola incentivi, tariffe o prezzi reali dell'energia, non verifica la fattibilità tecnica degli interventi e non assume responsabilità decisionali. Il risultato del solver è un supporto alla discussione: la decisione finale resta in capo all'amministrazione e va motivata con gli strumenti ordinari del procedimento amministrativo.
+
+\subsection*{Migliorie e prospettive di sviluppo futuro}
+In caso di adozione formale e prosecuzione del progetto da parte dell'Amministrazione comunale, sono previste le seguenti linee di evoluzione metodologica e applicativa:
+\begin{itemize}[leftmargin=1.4em, itemsep=0.25em]
+    \item \textbf{Integrazione con banche dati reali del Comune di Trento.} Transizione progressiva dal dataset sintetico dimostrativo all'acquisizione di flussi informativi ufficiali: collegamento con il Sistema Informativo Territoriale (SIT/GIS comunale), il catasto degli immobili pubblici, le banche dati dei consumi storici (bollette energetiche e telelettura) e la piattaforma Open Data del Trentino.
+    \item \textbf{Pianificazione pluriennale e incentivi (multi-year scheduling).} Estensione del solver a un orizzonte multi-periodale (es. piano triennale delle opere pubbliche), con modellazione del vincolo di cassa anno per anno e integrazione automatica delle quote di incentivo statale (Conto Termico 2.0/3.0, detrazioni fiscali e contributi PNRR).
+    \item \textbf{Frontiera di Pareto e ottimizzazione multi-obiettivo.} Introduzione di algoritmi di calcolo della frontiera di Pareto per permettere alla Giunta e ai comitati tecnici di esplorare direttamente il compromesso non dominato tra risparmio economico, kWh risparmiati e tonnellate di CO\textsubscript{2} evitate con pesature personalizzabili.
+    \item \textbf{Monitoraggio post-intervento e digital twin.} Modulo di verifica ex-post mediante telemetria IoT per confrontare i risparmi reali misurati sul campo con quelli previsti dal modello al momento della selezione.
+\end{itemize}
+
+\subsection*{Scelta dello stack tecnologico e motivazione architetturale}
+La definizione dell'architettura software di TEPO ha comportato un'approfondita analisi di trade-off tra le alternative comunemente adottate in ambito web e i requisiti specifici di affidabilità, correttezza matematica e integrità imposti da uno strumento decisionale della Pubblica Amministrazione.
+
+\paragraph{Motore di ottimizzazione matematica: Java 21 e Google OR-Tools vs. Node.js}
+Il requisito cardine del sistema è la risoluzione esatta, deterministica e certificata del problema di Knapsack/MILP binario con tie-break canonico a quattro passi. Google OR-Tools fornisce il solver CP-SAT (\emph{Constraint Programming - Satisfiability}) con binding industriali nativi per C++, Java, Python e .NET. L'ecosistema Node.js non offre librerie di ottimizzazione combinatoria stabili o con supporto a vincoli logici avanzati (come \texttt{OnlyEnforceIf}, vincoli di implicazione logica tra interventi e vincoli di mutua esclusione complessi); i pochi wrapper JavaScript/TypeScript esistenti sono basati su librerie obsolete di programmazione lineare continua o non sono manutenuti. L'adozione di Java 21 e Spring Boot 3 garantisce prestazioni native sub-secondo per centinaia di candidati, stabilità della memoria a lungo termine e riproducibilità matematica assoluta del calcolo.
+
+\paragraph{Persistenza e integrità dei dati: PostgreSQL relazionale vs. MongoDB}
+Il dominio applicativo di TEPO è intrinsecamente relazionale e caratterizzato da forti vincoli di integrità:
+\begin{itemize}[leftmargin=1.4em, itemsep=0.25em]
+    \item Gli interventi appartengono a specifici edifici (\emph{foreign key});
+    \item Esistono vincoli simmetrici di incompatibilità tra coppie di interventi ($x_i + x_j \le 1$);
+    \item Sussistono vincoli di prerequisito diretti ($x_A \le x_{\text{req}}$);
+    \item L'importazione CSV richiede validazione transazionale atomica per garantire che nessun record orfano o malformato corrompa il grafo dei vincoli.
+\end{itemize}
+PostgreSQL 16, affiancato da migrazioni versionate deterministiche gestite tramite Flyway (script \texttt{V1} e \texttt{V2}), garantisce il rispetto formale delle proprietà ACID e l'integrità referenziale a livello di motore. Un database orientato ai documenti come MongoDB, privo di vincoli referenziali dichiarativi nativi, esporrebbe il sistema a inconsistenze silenziose, disallineamenti tra interventi ed edifici e anomalie logiche che comprometterebbero l'ammissibilità dei portafogli calcolati dal solver.
+
+\paragraph{Linguaggio di front-end: React con TypeScript vs. JavaScript non tipizzato}
+L'interfaccia utente gestisce strutture dati complesse (matrici di scostamento A/B, vettori di sensibilità, cataloghi con indicatori aggregati, coordinate cartografiche). L'impiego di TypeScript permette la tipizzazione statica a tempo di compilazione, azzerando errori a runtime di tipo \texttt{TypeError} e garantendo la corrispondenza esatta con i contratti API REST definiti dallo schema OpenAPI. Il codice sorgente viene compilato tramite Vite nel bundle JavaScript finale ottimizzato per tutti i browser conformi agli standard ECMAScript moderni, senza alcun overhead a carico dell'utente.
